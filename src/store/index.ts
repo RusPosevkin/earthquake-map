@@ -1,23 +1,52 @@
 import { createStore } from "vuex";
-// Import axios to make HTTP requests
 import axios from "axios";
 
-export default createStore({
+export type EarthquakeDataItem = {
+  id: String;
+  place: String;
+  magnitude: Number;
+  coordinates: Array<Number>;
+};
+
+export interface State {
+  earthquakes: [] | EarthquakeDataItem[];
+  filter: String | null;
+  activeEarthquake: EarthquakeDataItem | null;
+  selectedEarthquake: EarthquakeDataItem | null;
+}
+
+export default createStore<State>({
   state: {
     earthquakes: [],
+    filter: null,
+    // filter: 'ug',
+    activeEarthquake: null,
+    selectedEarthquake: null,
   },
   getters: {
     getEarthquakes: (state) => state.earthquakes,
+    getFilteredEarthquakes: (state) => {
+      if (!state.earthquakes.length) {
+        return [];
+      }
+
+      return state.earthquakes.filter((earthquake) => {
+        if (typeof state.filter !== 'string') {
+          return true;
+        }
+        return earthquake.place.includes(state.filter);
+      });
+    },
   },
   actions: {
     async fetchEarthquakes({ commit }) {
       try {
         console.log('fetchEarthquakes was called');
-        const data = await axios.get(
+        const dataset = await axios.get(
           "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
         );
 
-        const transformedData = data.data.features.map(item => {
+        const transformedData = dataset.data.features.map(item => {
           return {
             id: item.properties.ids,
             place: item.properties.place,

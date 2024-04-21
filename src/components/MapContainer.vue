@@ -31,13 +31,39 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicnVzcG9zZXZraW4iLCJhIjoiY2x2OGRhYTM0MGhvczJtb
 let map;
 const mapContainer = ref();
 
+const earthquakes = computed(() => {
+  return store.state.earthquakes;
+});
+
+const filteredEarthquakes = computed(() => {
+  return store.getters.getFilteredEarthquakes;
+});
+
 onMounted(() => {
   map = new mapboxgl.Map({
     // container: this.$refs.mapContainer,
     container: mapContainer.value,
     style: "mapbox://styles/mapbox/standard",
-    center: [-3.188267, 55.953251],
-    zoom: 5,
+    center: [121.9678, 12.3257],
+    zoom: 2,
+  });
+
+  watch(filteredEarthquakes, () => {
+    console.log('updated state of earthquakes: ', earthquakes);
+    filteredEarthquakes.value.forEach(earthquake => {
+      const el = document.createElement('div');
+      el.className = 'marker marker-active';
+
+      new mapboxgl.Marker(el)
+        .setLngLat(earthquake.coordinates)
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 })
+            .setHTML(
+              `<h3>${earthquake.place}</h3><p>magnitude: ${earthquake.magnitude}</p>`
+            )
+        )
+        .addTo(map);
+    });
   });
 });
 
@@ -45,28 +71,6 @@ onUnmounted(() => {
   map.remove();
   map = null;
 });
-
-const earthquakes = computed(() => {
-  return store.state.earthquakes;
-});
-
-watch(earthquakes, () => {
-  console.log('updated state of earthquakes: ', earthquakes);
-  store.state.earthquakes.forEach(earthquake => {
-    const el = document.createElement('div');
-    el.className = 'marker marker-active';
-
-    new mapboxgl.Marker(el)
-      .setLngLat(earthquake.coordinates)
-      .setPopup(
-        new mapboxgl.Popup({ offset: 25 })
-          .setHTML(
-            `<h3>${earthquake.place}</h3><p>magnitude: ${earthquake.magnitude}</p>`
-          )
-      )
-      .addTo(map);
-  });
-})
 </script>
 
 <template>
