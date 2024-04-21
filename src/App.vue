@@ -1,47 +1,44 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+import MapContainer from './components/MapContainer.vue';
+import ListItems from './components/ListItems.vue';
+import '../node_modules/mapbox-gl/dist/mapbox-gl.css';
+// import { ref, onMounted, computed } from "vue";
+// import { useStore } from "vuex";
+
+// const store = useStore();
+
+// const getEarthquakes = computed(() => {
+//   return store.getters.getEarthquakes;
+// });
+
+// const earthquakes = computed(() => {
+//   return store.state.earthquakes;
+// });
+
+// onMounted(() => {
+//   // store.dispatch("fetchEarthquakes");
+//   store.fetchEarthquakes();
+// });
+
+export default {
+  components: {
+    MapContainer,
+    ListItems,
+  },
+};
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div id="layout">
+    <ListItems />
+    <MapContainer />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style>
+#layout {
+  flex: 1;
+  display: flex;
+  position: relative;
 }
 </style>
