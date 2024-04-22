@@ -12,7 +12,7 @@ export interface State {
   earthquakes: [] | EarthquakeDataItem[];
   filter: String | null;
   activeEarthquake: String | null;
-  selectedEarthquake: EarthquakeDataItem | null;
+  selectedEarthquake: String | null;
 }
 
 export default createStore<State>({
@@ -28,12 +28,25 @@ export default createStore<State>({
     getEarthquakes: (state) => state.earthquakes,
     getFilter: (state) => state.filter,
     getActiveEarthquake: (state) => state.activeEarthquake,
+    getSelectedEarthquake: (state) => state.selectedEarthquake,
+    getSelectedEarthquakeCoordinates: (state) => {
+      if (!state.selectedEarthquake) {
+        return {};
+      }
+
+      const id = state.selectedEarthquake;
+      const earthquakeItem = state.earthquakes.find(
+        (earthquake: EarthquakeDataItem) => earthquake.id === id
+      );
+
+      return earthquakeItem?.coordinates;
+    },
     getFilteredEarthquakes: (state) => {
       if (!state.earthquakes.length) {
         return [];
       }
 
-      return state.earthquakes.filter((earthquake) => {
+      return state.earthquakes.filter((earthquake: EarthquakeDataItem) => {
         if (typeof state.filter !== 'string') {
           return true;
         }
@@ -48,7 +61,6 @@ export default createStore<State>({
   actions: {
     async fetchEarthquakes({ commit }) {
       try {
-        console.log('fetchEarthquakes was called');
         const dataset = await axios.get(
           "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
         );
@@ -81,6 +93,9 @@ export default createStore<State>({
     },
     SET_ACTIVE(state, active) {
       state.activeEarthquake = active;
+    },
+    SET_SELECTED(state, selected) {
+      state.selectedEarthquake = selected;
     },
   },
 });

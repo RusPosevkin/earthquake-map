@@ -43,6 +43,14 @@ const activeEarthquake = computed(() => {
   return store.getters.getActiveEarthquake;
 });
 
+const selectedEarthquake = computed(() => {
+  return store.getters.getSelectedEarthquake;
+});
+
+const selectedEarthquakeCoordinates = computed(() => {
+  return store.getters.getSelectedEarthquakeCoordinates;
+});
+
 const debounce = (cb, wait = 250) => {
   let h = 0;
   let callable = (...args) => {
@@ -63,13 +71,12 @@ onMounted(() => {
   });
 
   const handleUpdatefilteredEarthquakes = () => {
-    console.log('updated state of earthquakes: ', earthquakes);
     const existedMarkers = document.querySelectorAll('.marker')
-    existedMarkers.forEach(marker => {
+    existedMarkers.forEach((marker) => {
       marker.remove();
     });
 
-    filteredEarthquakes.value.forEach(earthquake => {
+    filteredEarthquakes.value.forEach((earthquake) => {
       const el = document.createElement('div');
       el.className = 'marker hidden';
       el.setAttribute('data-id', earthquake.id);
@@ -84,15 +91,22 @@ onMounted(() => {
         )
         .addTo(map);
 
-      // show the marker only after it is correctly positioned and rendered
+      // show the marker only after it is correctly positioned and rendered at the map
       setTimeout(() => {
         el.classList.remove('hidden')
       }, 100);
     });
   };
 
-  // reduce rerendering during user typing
+  // reduce amount of rerendering iterations during user typing with debouncing
   watch(filteredEarthquakes, () => debounce(handleUpdatefilteredEarthquakes)());
+
+  watch(selectedEarthquake, () => {
+    map.flyTo({
+      center: selectedEarthquakeCoordinates.value,
+      essential: true,
+    });
+  });
 
   watch(activeEarthquake, () => {
     if (activeEarthquake.value) {
