@@ -2,8 +2,11 @@
 
 Web application using real-time earthquake data and displaying it on a map. Built with Mapbox and Vue.js.
 
+## Demo
+![screencast](https://github.com/RusPosevkin/earthquake-map/assets/1483747/4c7025fa-dd72-4264-a389-eae54cb4834f)
+
 ## Prerequisites
-You need installed [Node.js and npm](https://nodejs.org/en)
+You need to install [Node.js and npm](https://nodejs.org/en)
 
 ## How to run
 1. Clone this repository
