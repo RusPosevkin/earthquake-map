@@ -11,41 +11,37 @@ const filteredEarthquakes = computed(() => {
 const filterValue = computed({
   get: () => store.getters.getFilter,
   set: (value) => {
-    store.commit('SET_FILTER', value);
+    store.commit("SET_FILTER", value);
   },
 });
 
 const activeEarthquake = computed({
   get: () => store.getters.getActiveEarthquake,
   set: (value) => {
-    store.commit('SET_ACTIVE', value);
+    store.commit("SET_ACTIVE", value);
   },
 });
 
 const selectedEarthquake = computed({
   get: () => store.getters.getSelectedEarthquake,
   set: (value) => {
-    store.commit('SET_SELECTED', value);
+    store.commit("SET_SELECTED", value);
   },
 });
 
 const mouseEnterHandler = (evt) => {
   const id = evt.currentTarget.dataset.id;
-  console.log('mouseEnterHandler: ', id);
   activeEarthquake.value = id;
 };
 
 const mouseLeaveHandler = () => {
-  console.log('mouseLeaveHandler');
   activeEarthquake.value = null;
 };
 
 const clickHandler = (evt) => {
   const id = evt.currentTarget.dataset.id;
-  console.log('clickHandler');
   selectedEarthquake.value = id;
 };
-
 
 const earthquakes = computed(() => {
   return store.state.earthquakes;
@@ -59,10 +55,22 @@ onMounted(() => {
 <template>
   <div v-if="earthquakes.length > 0" class="list-items-wrapper">
     <h1 class="title">Last month earthquakes</h1>
-    <input v-model="filterValue" class="filter" placeholder="Filter earthquake by place name" />
+    <input
+      v-model="filterValue"
+      class="filter"
+      placeholder="Filter earthquake by place name"
+    />
     <ul v-if="filteredEarthquakes.length > 0" class="list">
-      <li class="list-item" @mouseenter="mouseEnterHandler" @click="clickHandler" @mouseleave="mouseLeaveHandler"
-        v-for="earthquake in filteredEarthquakes" :key="earthquake.id" :data-id="earthquake.id" ref="itemRefs">
+      <li
+        class="list-item"
+        @mouseenter="mouseEnterHandler"
+        @click="clickHandler"
+        @mouseleave="mouseLeaveHandler"
+        v-for="earthquake in filteredEarthquakes"
+        :key="earthquake.id"
+        :data-id="earthquake.id"
+        ref="itemRefs"
+      >
         <h2 class="subtitle">{{ earthquake.place }}</h2>
         <p>
           Magnitude: <span class="magnitude">{{ earthquake.magnitude }}</span>
@@ -124,6 +132,8 @@ onMounted(() => {
 
 .list-item:hover {
   background-color: #89b1e2;
-  box-shadow: rgba(46, 94, 238, 0.4) 5px 5px, rgba(46, 101, 240, 0.3) 10px 10px, rgba(69, 46, 240, 0.2) 15px 15px, rgba(46, 91, 240, 0.1) 20px 20px, rgba(78, 46, 240, 0.05) 25px 25px;
+  box-shadow: rgba(46, 94, 238, 0.4) 5px 5px, rgba(46, 101, 240, 0.3) 10px 10px,
+    rgba(69, 46, 240, 0.2) 15px 15px, rgba(46, 91, 240, 0.1) 20px 20px,
+    rgba(78, 46, 240, 0.05) 25px 25px;
 }
 </style>

@@ -1,15 +1,15 @@
 import { createStore } from "vuex";
 import axios from "axios";
 
-export type EarthquakeDataItem = {
+type EarthquakeDataItem = {
   id: String;
   place: String;
   magnitude: Number;
   coordinates: Array<Number>;
 };
 
-export interface State {
-  earthquakes: [] | EarthquakeDataItem[];
+interface State {
+  earthquakes: EarthquakeDataItem[] | [];
   filter: String | null;
   activeEarthquake: String | null;
   selectedEarthquake: String | null;
@@ -19,9 +19,7 @@ export default createStore<State>({
   state: {
     earthquakes: [],
     filter: null,
-    // filter: 'ug',
     activeEarthquake: null,
-    // activeEarthquake: ',ew1713467960,ci40549375,us7000mczm,',
     selectedEarthquake: null,
   },
   getters: {
@@ -47,14 +45,12 @@ export default createStore<State>({
       }
 
       return state.earthquakes.filter((earthquake: EarthquakeDataItem) => {
-        if (typeof state.filter !== 'string') {
+        if (typeof state.filter !== "string") {
           return true;
         }
         const filteredValue = state.filter.trim().toLowerCase();
 
-        return earthquake.place
-          .toLowerCase()
-          .includes(filteredValue);
+        return earthquake.place.toLowerCase().includes(filteredValue);
       });
     },
   },
@@ -65,7 +61,7 @@ export default createStore<State>({
           "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
         );
 
-        const transformedData = dataset.data.features.map(item => {
+        const transformedData = dataset.data.features.map((item) => {
           return {
             id: item.properties.ids,
             place: item.properties.place,
