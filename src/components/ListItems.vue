@@ -8,10 +8,23 @@ const filteredEarthquakes = computed(() => {
   return store.getters.getFilteredEarthquakes;
 });
 
+// const debounce = (cb, wait = 250) => {
+//   let h = 0;
+//   let callable = (...args) => {
+//     clearTimeout(h);
+//     h = setTimeout(() => cb(...args), wait);
+//   };
+
+//   return (callable);
+// };
+
 const filterValue = computed({
   get: () => store.getters.getFilter,
   set: (value) => {
     store.commit('SET_FILTER', value);
+    // debounce(() => {
+    //   store.commit('SET_FILTER', value);
+    // })();
   },
 });
 

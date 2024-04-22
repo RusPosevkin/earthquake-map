@@ -39,6 +39,16 @@ const filteredEarthquakes = computed(() => {
   return store.getters.getFilteredEarthquakes;
 });
 
+const debounce = (cb, wait = 250) => {
+  let h = 0;
+  let callable = (...args) => {
+    clearTimeout(h);
+    h = setTimeout(() => cb(...args), wait);
+  };
+
+  return (callable);
+};
+
 onMounted(() => {
   map = new mapboxgl.Map({
     // container: this.$refs.mapContainer,
@@ -48,7 +58,7 @@ onMounted(() => {
     zoom: 2,
   });
 
-  watch(filteredEarthquakes, () => {
+  const handleUpdatefilteredEarthquakes = () => {
     console.log('updated state of earthquakes: ', earthquakes);
     const existedMarkers = document.querySelectorAll('.marker')
     existedMarkers.forEach(marker => {
@@ -57,7 +67,8 @@ onMounted(() => {
 
     filteredEarthquakes.value.forEach(earthquake => {
       const el = document.createElement('div');
-      el.className = 'marker marker-active';
+      el.className = 'marker marker-active hidden';
+      // el.className = 'marker marker-active';
 
       new mapboxgl.Marker(el)
         .setLngLat(earthquake.coordinates)
@@ -68,8 +79,15 @@ onMounted(() => {
             )
         )
         .addTo(map);
+
+      // show the marker only after it is correctly positioned and rendered
+      setTimeout(() => {
+        el.classList.remove('hidden')
+      }, 100);
     });
-  });
+  };
+
+  watch(filteredEarthquakes, () => debounce(handleUpdatefilteredEarthquakes)());
 });
 
 onUnmounted(() => {
@@ -85,5 +103,9 @@ onUnmounted(() => {
 <style>
 .map-container {
   flex: 1;
+}
+
+.hidden {
+  display: none;
 }
 </style>
