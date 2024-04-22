@@ -4,7 +4,7 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
-const getFilteredEarthquakes = computed(() => {
+const filteredEarthquakes = computed(() => {
   return store.getters.getFilteredEarthquakes;
 });
 
@@ -25,15 +25,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="getFilteredEarthquakes.length > 0" class="list-items-wrapper">
+  <div v-if="earthquakes.length > 0" class="list-items-wrapper">
     <h1 class="title">Last month earthquakes</h1>
     <input v-model="filterValue" class="filter" placeholder="Filter earthquake by name" />
-    <ul class="list">
-      <li class="list-item" v-for="earthquake in getFilteredEarthquakes" :key="earthquake.id">
+    <ul v-if="filteredEarthquakes.length > 0" class="list">
+      <li class="list-item" v-for="earthquake in filteredEarthquakes" :key="earthquake.id">
         <h2 class="subtitle">{{ earthquake.place }}</h2>
         <p>Magnitude: <span class="magnitude">{{ earthquake.magnitude }}</span></p>
       </li>
     </ul>
+    <div v-else>There are no earthquakes found 🤷‍♂️</div>
     <!-- <h1>Made By Actions</h1>
     <div v-for="earthquake in earthquakes" :key="earthquake.id">
       {{ earthquake.place }} {{ earthquake.magnitude }} {{ earthquake.coordinates }}
