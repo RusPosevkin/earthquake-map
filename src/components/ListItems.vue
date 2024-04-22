@@ -25,10 +25,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="list-items-wrapper">
+  <div v-if="getFilteredEarthquakes.length > 0" class="list-items-wrapper">
     <h1 class="title">Last month earthquakes</h1>
     <input v-model="filterValue" class="filter" placeholder="Filter earthquake by name" />
-    <ul class="list" v-if="getFilteredEarthquakes.length > 0">
+    <ul class="list">
       <li class="list-item" v-for="earthquake in getFilteredEarthquakes" :key="earthquake.id">
         <h2 class="subtitle">{{ earthquake.place }}</h2>
         <p>Magnitude: <span class="magnitude">{{ earthquake.magnitude }}</span></p>
@@ -39,6 +39,7 @@ onMounted(() => {
       {{ earthquake.place }} {{ earthquake.magnitude }} {{ earthquake.coordinates }}
     </div> -->
   </div>
+  <div v-else class="list-items-wrapper">Loading ...</div>
 </template>
 
 <style>
