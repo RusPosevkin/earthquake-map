@@ -11,7 +11,7 @@ export type EarthquakeDataItem = {
 export interface State {
   earthquakes: [] | EarthquakeDataItem[];
   filter: String | null;
-  activeEarthquake: EarthquakeDataItem | null;
+  activeEarthquake: String | null;
   selectedEarthquake: EarthquakeDataItem | null;
 }
 
@@ -21,11 +21,13 @@ export default createStore<State>({
     filter: null,
     // filter: 'ug',
     activeEarthquake: null,
+    // activeEarthquake: ',ew1713467960,ci40549375,us7000mczm,',
     selectedEarthquake: null,
   },
   getters: {
     getEarthquakes: (state) => state.earthquakes,
     getFilter: (state) => state.filter,
+    getActiveEarthquake: (state) => state.activeEarthquake,
     getFilteredEarthquakes: (state) => {
       if (!state.earthquakes.length) {
         return [];
@@ -76,6 +78,9 @@ export default createStore<State>({
       }
 
       state.filter = filter;
+    },
+    SET_ACTIVE(state, active) {
+      state.activeEarthquake = active;
     },
   },
 });

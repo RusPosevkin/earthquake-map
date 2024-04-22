@@ -39,6 +39,10 @@ const filteredEarthquakes = computed(() => {
   return store.getters.getFilteredEarthquakes;
 });
 
+const activeEarthquake = computed(() => {
+  return store.getters.getActiveEarthquake;
+});
+
 const debounce = (cb, wait = 250) => {
   let h = 0;
   let callable = (...args) => {
@@ -46,7 +50,7 @@ const debounce = (cb, wait = 250) => {
     h = setTimeout(() => cb(...args), wait);
   };
 
-  return (callable);
+  return callable;
 };
 
 onMounted(() => {
@@ -67,8 +71,8 @@ onMounted(() => {
 
     filteredEarthquakes.value.forEach(earthquake => {
       const el = document.createElement('div');
-      el.className = 'marker marker-active hidden';
-      // el.className = 'marker marker-active';
+      el.className = 'marker hidden';
+      el.setAttribute('data-id', earthquake.id);
 
       new mapboxgl.Marker(el)
         .setLngLat(earthquake.coordinates)
@@ -87,7 +91,18 @@ onMounted(() => {
     });
   };
 
+  // reduce rerendering during user typing
   watch(filteredEarthquakes, () => debounce(handleUpdatefilteredEarthquakes)());
+
+  watch(activeEarthquake, () => {
+    if (activeEarthquake.value) {
+      const markerId = document.querySelector(`.marker[data-id="${activeEarthquake.value}"]`);
+      markerId.classList.add('marker-active');
+    } else {
+      const activeMarkerId = document.querySelector('.marker-active');
+      activeMarkerId.classList.remove('marker-active');
+    }
+  });
 });
 
 onUnmounted(() => {

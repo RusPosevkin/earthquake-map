@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "mapbox-gl": "^3.3.0",
-    "vue": "^3.2.38",
+    "vue": "^3.4.24",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
