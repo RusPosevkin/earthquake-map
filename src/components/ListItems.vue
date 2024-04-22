@@ -8,6 +8,13 @@ const getFilteredEarthquakes = computed(() => {
   return store.getters.getFilteredEarthquakes;
 });
 
+const filterValue = computed({
+  get: () => store.getters.getFilter,
+  set: (value) => {
+    store.commit('SET_FILTER', value);
+  },
+});
+
 const earthquakes = computed(() => {
   return store.state.earthquakes;
 });
@@ -20,6 +27,7 @@ onMounted(() => {
 <template>
   <div class="list-items-wrapper">
     <h1 class="title">Last month earthquakes</h1>
+    <input v-model="filterValue" class="filter" placeholder="Filter earthquake by name" />
     <ul class="list" v-if="getFilteredEarthquakes.length > 0">
       <li class="list-item" v-for="earthquake in getFilteredEarthquakes" :key="earthquake.id">
         <h2 class="subtitle">{{ earthquake.place }}</h2>
@@ -35,11 +43,20 @@ onMounted(() => {
 
 <style>
 .list-items-wrapper {
-  background-color: #94a9b3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #cde0e9;
   color: black;
-  min-width: 300px;
+  min-width: 400px;
   max-width: 35%;
   overflow-y: scroll;
+}
+
+.filter {
+  width: 250px;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 .title {
@@ -65,10 +82,14 @@ onMounted(() => {
 }
 
 .list-item {
-  background-color: #a3ccff;
+  background-color: #a7b5c5;
   padding: 5px;
   cursor: pointer;
   margin: 0 10px 10px;
   border-radius: 5px;
+}
+
+.list-item:hover {
+  background-color: #89b1e2;
 }
 </style>

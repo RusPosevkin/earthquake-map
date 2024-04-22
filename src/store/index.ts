@@ -25,6 +25,7 @@ export default createStore<State>({
   },
   getters: {
     getEarthquakes: (state) => state.earthquakes,
+    getFilter: (state) => state.filter,
     getFilteredEarthquakes: (state) => {
       if (!state.earthquakes.length) {
         return [];
@@ -34,7 +35,11 @@ export default createStore<State>({
         if (typeof state.filter !== 'string') {
           return true;
         }
-        return earthquake.place.includes(state.filter);
+        const filteredValue = state.filter.trim().toLowerCase();
+
+        return earthquake.place
+          .toLowerCase()
+          .includes(filteredValue);
       });
     },
   },
@@ -64,6 +69,13 @@ export default createStore<State>({
   mutations: {
     SET_EARTHQUAKES(state, earthquakes) {
       state.earthquakes = earthquakes;
+    },
+    SET_FILTER(state, filter) {
+      if (filter.length === 0) {
+        filter = null;
+      }
+
+      state.filter = filter;
     },
   },
 });

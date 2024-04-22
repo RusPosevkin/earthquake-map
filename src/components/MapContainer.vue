@@ -50,6 +50,11 @@ onMounted(() => {
 
   watch(filteredEarthquakes, () => {
     console.log('updated state of earthquakes: ', earthquakes);
+    const existedMarkers = document.querySelectorAll('.marker')
+    existedMarkers.forEach(marker => {
+      marker.remove();
+    });
+
     filteredEarthquakes.value.forEach(earthquake => {
       const el = document.createElement('div');
       el.className = 'marker marker-active';
