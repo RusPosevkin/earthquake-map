@@ -1,19 +1,19 @@
 <script>
 import MapContainer from "./components/MapContainer.vue";
-import ListItems from "./components/ListItems.vue";
+import EarthquakeList from "./components/EarthquakeList.vue";
 import "../node_modules/mapbox-gl/dist/mapbox-gl.css";
 
 export default {
   components: {
     MapContainer,
-    ListItems,
+    EarthquakeList,
   },
 };
 </script>
 
 <template>
   <div id="layout">
-    <ListItems />
+    <EarthquakeList />
     <MapContainer />
   </div>
 </template>

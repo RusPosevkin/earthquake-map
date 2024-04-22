@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from "mapbox-gl";
 import { useStore } from "vuex";
 
 const store = useStore();
