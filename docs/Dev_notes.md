@@ -6,6 +6,9 @@
 This project uses Vuex as a state management library as explicitly stated in the assignment.
 Although [Vuex site](https://vuex.vuejs.org/) stated that the official state management library for Vue has changed to [Pinia](https://pinia.vuejs.org/).
 
+* The main complexity at the start – figure out how to convert info from articles and tutorials that used both Options API and Composition API to some consistency. I.e [mapbox's tutorial](https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-vue/) used Options API.
+Based on the information from articles and used analogy with React it looks like the Options API is similar to React class components and the Composition API is similar to React functional components with hooks. So I decided to continue with the Composition API approach.
+
 * Current approach for rendering markers with removing existing markers and rendering again from scratch isn’t optimal.
 Ideas how it could be fixed and improved:
 1. Store earthquake `id` as marker’s `data-id` attribute in the DOM and during rerender phase after update of the filtered value just check if we already have `id` from DOM in the list of the filtered earthquakes from the store.
