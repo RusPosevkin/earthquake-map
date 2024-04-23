@@ -69,7 +69,6 @@ onMounted(() => {
         v-for="earthquake in filteredEarthquakes"
         :key="earthquake.id"
         :data-id="earthquake.id"
-        ref="itemRefs"
       >
         <h2 class="subtitle">{{ earthquake.place }}</h2>
         <p>

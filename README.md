@@ -26,4 +26,4 @@ You need to install [Node.js and npm](https://nodejs.org/en)
   npm run dev
   ```
 
-4. Open in a browser a link that shown in the terminal. I.e. [http://localhost:5173](http://localhost:5173/).
+4. Open in a browser a link that is shown in the terminal. I.e. [http://localhost:5173](http://localhost:5173/).

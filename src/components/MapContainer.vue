@@ -41,10 +41,12 @@ onMounted(() => {
   map = new mapboxgl.Map({
     container: mapContainer.value,
     style: "mapbox://styles/mapbox/standard",
+    // Asia and Oceania usually have a lot of earthquake cases
     center: [121.9678, 12.3257],
     zoom: 2,
   });
 
+  // rendering markers and popups for filtered earthquakes
   const handleUpdatefilteredEarthquakes = () => {
     const existedMarkers = document.querySelectorAll(".marker");
     existedMarkers.forEach((marker) => {
@@ -75,6 +77,7 @@ onMounted(() => {
   // reduce amount of rerendering iterations during user typing with debouncing
   watch(filteredEarthquakes, () => debounce(handleUpdatefilteredEarthquakes)());
 
+  // handling selecting by click to earthquake item in the list
   watch(selectedEarthquake, () => {
     map.flyTo({
       center: selectedEarthquakeCoordinates.value,
@@ -82,7 +85,9 @@ onMounted(() => {
     });
   });
 
+  // handling active earthquake – hovering earthquake item in the list
   watch(activeEarthquake, () => {
+    // if we have active earthquake id in state – make map marker active
     if (activeEarthquake.value) {
       const markerElement = document.querySelector(
         `.marker[data-id="${activeEarthquake.value}"]`
